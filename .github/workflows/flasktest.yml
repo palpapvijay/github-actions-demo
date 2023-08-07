@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         defaults:
             run:
-                working-directory: ./github-actions-demo/app/
+                working-directory: /app/
 
         strategy:
             matrix:
