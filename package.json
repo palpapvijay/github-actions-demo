@@ -1,0 +1,38 @@
+{
+  "name": "triton",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "concurrently \"ng serve --port 4200 --host 0.0.0.0 --disable-host-check\" \"docker-compose up --force-recreate --remove-orphans\"",
+    "start:ui": "ng serve --port 4200 --host 0.0.0.0 --disable-host-check",
+    "postinstall": "",
+    "start:api": "docker-compose up --force-recreate --remove-orphans",
+    "stop": "docker-compose down",
+    "grunt:install": "grunt install",
+    "grunt:package": "grunt package",
+    "build:prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --aot=true --build-optimizer=false --vendor-chunk --common-chunk --delete-output-path --base-href ./",
+    "test": "ng test --code-coverage=true --source-map=true --watch=false",
+    "test:microservices": "nyc mocha --config .microservices.mocharc.js",
+    "test:microservices:report:html": "npm run test:microservices; nyc report --reporter=html",
+    "test:microservices:report:summary": "npm run test:microservices; nyc report --reporter=text-summary",
+    "test:show:coverage": "open ./coverage/index.html",
+    "lint": "ng lint",
+    "e2e": "ng e2e -s false",
+    "typings": "typings",
+    "version": "npm version $VERSION && find ./microservices/* -name package.json -maxdepth 1 -execdir npm version $VERSION \\;",
+    "pstbuild:prod": "grunt copydocs && grunt copydocsCommonServices && common-services/camunda/camunda/scripts/camundamodelarchive.sh && swagger/sdkgenerator.sh",
+    "generate:sys-modules": "node ./src/tools/sys-module-generator",
+    "setup": "sh dev-setup.sh",
+    "generate:audit:report": "npm audit --json | npm-audit-html --output portal_service_npm_audit_report.html ; sh update_npm_audit_report.sh"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@cisco-bpa-platform/bpa-devcompose-patch": "file:npmpackages/bpa-devcompose-patch/bpa-devcompose-patch-3.0.0-2.tgz",
+    "@cisco-bpa-platform/bpa-kubernetes-secrets-patch": "file:npmpackages/bpa-kubernetes-secrets-patch/bpa-kubernetes-secrets-patch-3.0.0-1.tgz",
+    "@cisco-bpa-platform/bpa-mongodb-patch": "file:npmpackages/bpa-mongodb-patch/bpa-mongodb-patch-3.0.0-1.tgz",
+    "@cisco-bpa-platform/bpa-packaging-tools": "file:npmpackages/bpa-packaging-tools/bpa-packaging-tools-1.0.8.tgz",
+    "@cisco-bpa-platform/cs-postgresdb": "file:npmpackages/cs-postgresdb/cs-postgresdb-1.0.4.tgz"
+  }
+}
